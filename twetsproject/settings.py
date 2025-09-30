@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -90,6 +90,14 @@ DATABASES = {
     }
 }
 
+# import dj_database_url
+
+# DATABASES = {
+#      'default':  dj_database_url.parse(config(
+#         'DATABASE_URL'
+#          ))
+#  }
+
 
 cloudinary.config (
     api_key = config('CLOUDINARY_API_KEY'),
@@ -122,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
