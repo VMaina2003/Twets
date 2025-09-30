@@ -8,35 +8,38 @@
 <div class="mb-6">
   <a href="{% url 'create_twet' %}"
      class="bg-blue-500 text-white px-5 py-2 rounded-full font-medium hover:bg-blue-600 transition">
-    Post a Twet
+     Post a Tweet
   </a>
 </div>
 
-<!-- Tweets Feed Wrapper -->
+<!-- Tweets Feed -->
 <div class="space-y-6 max-w-3xl mx-auto w-full px-4 sm:px-6 lg:px-0">
   {% for twet in twets %}
-    <div class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition duration-200">
-      <!-- Tweet Header -->
+    <article class="bg-white p-4 sm:p-6 rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition duration-200">
       <div class="flex items-start space-x-4">
-        <!-- Avatar -->
-        <div class="flex-shrink-0 w-10 h-10 bg-gray-300 rounded-full sm:w-12 sm:h-12"></div>
+        
+        <!-- Avatar Placeholder -->
+        <div class="flex-shrink-0 w-10 h-10 sm:w-12 sm:h-12 bg-gray-300 rounded-full"></div>
 
-        <!-- Content Wrapper -->
+        <!-- Main Content -->
         <div class="flex-1">
-          <!-- Username & Timestamp -->
-          <div class="flex justify-between flex-wrap gap-y-1 sm:items-center">
+          
+          <!-- Header -->
+          <header class="flex justify-between flex-wrap gap-y-1 sm:items-center">
             <div class="flex items-center space-x-2">
               <span class="font-semibold text-gray-900 text-sm sm:text-base">{{ twet.user.username }}</span>
               <span class="text-sm text-gray-500">· {{ twet.created_at|date:"M d, Y H:i" }}</span>
             </div>
-          </div>
+          </header>
 
-          <!-- Tweet Text -->
+          <!-- Text Content -->
           {% if twet.content %}
-            <p class="mt-2 text-gray-900 text-sm sm:text-base leading-relaxed">{{ twet.content }}</p>
+            <p class="mt-2 text-gray-900 text-sm sm:text-base leading-relaxed">
+              {{ twet.content }}
+            </p>
           {% endif %}
 
-          <!-- Tweet Image -->
+          <!-- Image -->
           {% if twet.image %}
             <div class="mt-3 rounded-xl overflow-hidden border border-gray-200">
               <img src="{{ twet.image.url }}"
@@ -47,22 +50,38 @@
 
           <!-- Optional Description -->
           {% if twet.description %}
-            <p class="mt-2 text-gray-600 text-sm leading-snug">{{ twet.description }}</p>
+            <p class="mt-2 text-gray-600 text-sm leading-snug">
+              {{ twet.description }}
+            </p>
           {% endif %}
 
           <!-- Actions -->
-          <div class="mt-4 flex flex-wrap justify-between items-center text-sm text-gray-500 gap-2">
-            <div class="space-x-4">
-              <a href="{% url 'twet_detail' twet.id %}" class="hover:underline">Details</a>
+          <footer class="mt-4 flex flex-wrap justify-between items-center text-sm text-gray-500 gap-3">
+            <div class="flex space-x-4">
+
+              <!-- Like Button -->
+              <form action="{% url 'like_twet' twet.id %}" method="POST" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="hover:underline">
+                   Like ({{ twet.total_likes }})
+                </button>
+              </form>
+
+              <!-- Comments -->
+              <a href="{% url 'twet_detail' twet.id %}" class="hover:underline">
+                 Comments ({{ twet.comments.count }})
+              </a>
+
+              <!-- Owner Actions -->
               {% if twet.user == request.user %}
-                <a href="{% url 'edit_twet' twet.id %}" class="text-blue-600 hover:underline">Edit</a>
-                <a href="{% url 'delete_twet' twet.id %}" class="text-red-600 hover:underline">Delete</a>
+                <a href="{% url 'edit_twet' twet.id %}" class="text-blue-600 hover:underline"> Edit</a>
+                <a href="{% url 'delete_twet' twet.id %}" class="text-red-600 hover:underline"> Delete</a>
               {% endif %}
             </div>
-          </div>
+          </footer>
         </div>
       </div>
-    </div>
+    </article>
   {% empty %}
     <p class="text-gray-500 text-center">No twets yet. Be the first to post!</p>
   {% endfor %}
