@@ -1,13 +1,22 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
-from .models import Tweet
+from .models import Twet
 
 @login_required
-def feed(request):
-    tweets = Tweet.objects.all().order_by('-created_at')
-    if request.method == "POST":
-        content = request.POST.get("content")
+def feed_view(request):
+    twets = Twet.objects.all().order_by('-created_at')
+    return render(request, 'twets/feed.html', {'twets': twets})
+
+@login_required
+def create_twet(request):
+    if request.method == 'POST':
+        content = request.POST.get('content')
         if content:
-            Tweet.objects.create(user=request.user, content=content)
-            return redirect("feed")
-    return render(request, "twets/feed.html", {"tweets": tweets})
+            Twet.objects.create(user=request.user, content=content)
+            return redirect('feed')
+    return render(request, 'twets/create_twet.html')
+
+@login_required
+def twet_detail(request, id):
+    twet = get_object_or_404(Twet, id=id)
+    return render(request, 'twets/twet_detail.html', {'twet': twet})

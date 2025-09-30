@@ -1,8 +1,8 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include("twetsapp.urls")),
-    path('auth/', include("twetsauthenticationapp.urls")),
+    path('', views.feed_view, name='feed'),       # Home/Feed
+    path('create/', views.create_twet, name='create_twet'),  # Post new tweet
+    path('<int:id>/', views.twet_detail, name='twet_detail'),  # View single tweet
 ]
