@@ -1,0 +1,26 @@
+{% extends "twets/base.html" %}
+{% block content %}
+<h2 class="text-xl font-bold mb-4">Your Feed</h2>
+
+<form method="POST" class="mb-6">
+  {% csrf_token %}
+  <textarea name="content" placeholder="What's happening?" rows="3"
+    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+  <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Tweet</button>
+</form>
+
+<hr class="my-4">
+
+{% for tweet in tweets %}
+<div class="mb-4 border-b pb-4">
+  <div class="flex items-center justify-between">
+    <strong class="text-blue-500">@{{ tweet.user.username }}</strong>
+    <span class="text-sm text-gray-500">{{ tweet.created_at|date:"M d, H:i" }}</span>
+  </div>
+  <p class="mt-2">{{ tweet.content }}</p>
+</div>
+{% empty %}
+<p class="text-gray-500">No tweets yet. Be the first!</p>
+{% endfor %}
+
+{% endblock %}
