@@ -1,0 +1,46 @@
+{% extends "twets/base.html" %}
+{% block title %}Edit Twet{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">Edit Twet</h1>
+
+<form method="POST" enctype="multipart/form-data" class="space-y-4">
+  {% csrf_token %}
+
+  <div>
+    <label for="content" class="block text-sm font-medium">Content</label>
+    <input type="text" name="content" id="content"
+           value="{{ form.content.value|default:'' }}"
+           class="w-full border-gray-300 rounded-lg px-3 py-2"
+           maxlength="280" required>
+    {% if form.content.errors %}
+      <p class="text-red-500 text-sm mt-1">{{ form.content.errors.0 }}</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <label for="description" class="block text-sm font-medium">Description</label>
+    <textarea name="description" id="description" rows="3"
+              class="w-full border-gray-300 rounded-lg px-3 py-2">{{ form.description.value|default:'' }}</textarea>
+    {% if form.description.errors %}
+      <p class="text-red-500 text-sm mt-1">{{ form.description.errors.0 }}</p>
+    {% endif %}
+  </div>
+
+  <div>
+    <label for="image" class="block text-sm font-medium">Upload Image</label>
+    {% if twet.image %}
+      <img src="{{ twet.image.url }}" alt="Current image" class="mt-2 h-32 rounded">
+    {% endif %}
+    <input type="file" name="image" id="image" class="block mt-1">
+    {% if form.image.errors %}
+      <p class="text-red-500 text-sm mt-1">{{ form.image.errors.0 }}</p>
+    {% endif %}
+  </div>
+
+  <button type="submit"
+          class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">
+    Save Changes
+  </button>
+</form>
+{% endblock %}

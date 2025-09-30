@@ -1,0 +1,16 @@
+{% extends "twets/base.html" %}
+{% block title %}Twet Details{% endblock %}
+
+{% block content %}
+<div class="bg-white p-6 rounded-lg shadow">
+  <p class="text-gray-900 text-lg">{{ twet.content }}</p>
+  <p class="text-sm text-gray-500 mt-2">
+    Posted by <span class="font-medium">{{ twet.user.username }}</span>
+    on {{ twet.created_at|date:"M d, Y H:i" }}
+  </p>
+</div>
+
+<div class="mt-6">
+  <a href="{% url 'feed' %}" class="text-blue-600 hover:underline">← Back to Feed</a>
+</div>
+{% endblock %}
